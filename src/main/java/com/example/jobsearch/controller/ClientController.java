@@ -17,6 +17,11 @@ public class ClientController {
     @Autowired
     private ClientService clientService;
 
+
+    // @RequestBody a kapott JSON-t a index.html form post kérelemtől automatikusan deszerializálja és feltölti a Client object-tet a megfelelő mezőkkel
+    // A ClientService registerClient metódusa meghívásra kerül ezzel a Client-tel.
+    // Return: egy api kulcs
+
     @PostMapping
     public ResponseEntity<String> registerClient(@RequestBody Client client) {
         String apiKey = clientService.registerClient(client);
