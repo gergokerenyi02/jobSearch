@@ -11,7 +11,7 @@ import lombok.Setter;
 
 
 @Entity
-@Getter
+@Getter @Setter
 public class Client {
 
     @Id
