@@ -22,8 +22,15 @@ public class ClientController {
     // A ClientService registerClient metódusa meghívásra kerül ezzel a Client-tel.
     // Return: egy api kulcs
 
+    // Error: @RequestBody miatt
+    // Form küldési típusa: (Content-Type) application/x-www-form-urlencoded
+    // A @RequestBody JSON-t vár
+
+    // Megoldás
+    // Használjunk @ModelAttribute annotációt
+
     @PostMapping
-    public ResponseEntity<String> registerClient(@RequestBody Client client) {
+    public ResponseEntity<String> registerClient(@ModelAttribute Client client) {
         String apiKey = clientService.registerClient(client);
         return ResponseEntity.ok(apiKey);
     }
