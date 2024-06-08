@@ -2,9 +2,14 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <title>Job Search Application</title>
+    <style>
+        .success-msg {
+            color: green;
+        }
+    </style>
 </head>
 <body>
-<h1 th:text="${message}"></h1>
+<h1 th:text="${welcome_message}"></h1>
 <form method="post" action="/client">
     <label for="name">Your name:</label>
     <input type="text" id="name" name="name" required><br>
@@ -13,6 +18,7 @@
 
     <button type="submit">Register</button>
 </form>
+<p th:text="${message}" class="success-msg" th:if="${message != null}"></p>
 
 
 <form method="post" action="/api/jobs">
