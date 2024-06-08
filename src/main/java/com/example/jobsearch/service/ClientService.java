@@ -9,8 +9,10 @@ import org.springframework.stereotype.Service;
 
 
 // Szolgáltatás
+
+// Itt:
 // Üzleti logika:
-// Kliens registrációja: VALIDÁCIÓ, API kulcs generálás, Adatbázisba mentés
+// Kliens regisztrációja: VALIDÁCIÓ, API kulcs generálás, Adatbázisba mentés
 // Állás létrehozása: VALIDÁCIÓ, API kulcs ellenőrzése, Adatbázisba mentés
 // Állás keresés: API kulcs ellenőrzés, keresés végrehajtása, eredmények visszaadása
 
