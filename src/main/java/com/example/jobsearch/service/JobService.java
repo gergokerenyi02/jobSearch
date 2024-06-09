@@ -20,8 +20,12 @@ public class JobService {
         return jobRepository.save(job);
     }
 
-    public List<Job> searchJobsByKeyword(String keyword) {
-        return jobRepository.findByTitleContainingOrLocationContaining(keyword, keyword);
+    public List<Job> searchJobsByKeyword(String keyword_title, String keyword_location) {
+        return jobRepository.findByTitleContainingOrLocationContaining(keyword_title, keyword_location);
+    }
+
+    public Job getJobById(Long id) {
+        return jobRepository.findById(id).orElse(null);
     }
 
 }
