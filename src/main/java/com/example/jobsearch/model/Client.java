@@ -22,7 +22,7 @@ public class Client {
     private String name;
 
 
-    @Email
+    @Email(regexp = ".+[@].+[\\.].+")
     @Column(unique = true)
     private String email;
 
