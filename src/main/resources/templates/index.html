@@ -6,6 +6,10 @@
         .success-msg {
             color: green;
         }
+        .error-msg
+        {
+            color: red;
+        }
         form {
             margin-bottom: 20px;
         }
@@ -40,17 +44,55 @@
             const keywordLocation = document.getElementById("keyword_location").value;
             const response = await fetch(`/position/search?keyword_title=${keywordTitle}&keyword_location=${keywordLocation}`);
             const jobDetails = await response.json();
-            const resultsDiv = document.getElementById("results");
-            resultsDiv.innerHTML = ""; // Clear previous results
-            jobDetails.forEach(job => {
-                const link = document.createElement("a");
-                link.href = job.url;
-                link.textContent = `${job.title} - ${job.location}`;
-                link.target = "_blank"; // Open link in new tab
-                resultsDiv.appendChild(link);
-                resultsDiv.appendChild(document.createElement("br"));
-            });
+
+            if(response.ok)
+            {
+                const resultsDiv = document.getElementById("results");
+                resultsDiv.innerHTML = ""; // Clear previous results
+                jobDetails.forEach(job => {
+                    const link = document.createElement("a");
+                    link.href = job.url;
+                    link.textContent = `${job.title} - ${job.location}`;
+                    link.target = "_blank"; // Open link in new tab
+                    resultsDiv.appendChild(link);
+                    resultsDiv.appendChild(document.createElement("br"));
+                });
+            } else
+            {
+                const msgDiv = document.getElementById("message");
+                msgDiv.textContent = "Error: " + jobDetails.message;
+                msgDiv.classList.add("error-msg");
+                msgDiv.classList.remove("success-msg");
+            }
+
         }
+
+        async function registerClient(event) {
+            event.preventDefault();
+            const name = document.getElementById("name").value;
+            const email = document.getElementById("email").value;
+            const response = await fetch('/client', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({email,name})
+            });
+
+            const result = await response.text();
+            const msgDiv = document.getElementById("message");
+            if (response.ok) {
+                msgDiv.textContent = "Registration successful!"
+                msgDiv.classList.add("success-msg");
+                msgDiv.classList.remove("error-msg");
+            } else {
+                msgDiv.textContent = "Registration failed: " + result;
+                msgDiv.classList.add("error-msg");
+                msgDiv.classList.remove("success-msg");
+            }
+
+        }
+
     </script>
 </head>
 <body>
@@ -58,7 +100,7 @@
 <div class="menu">
 <section id="registration">
     <h2>Client Registration</h2>
-    <form method="post" action="/client">
+    <form id="registrationForm" onsubmit="registerClient(event)">
         <label for="name">Your Name:</label>
         <input type="text" id="name" name="name" required>
         <label for="email">Email:</label>
@@ -90,7 +132,7 @@
 
 </section>
 </div>
-<p th:text="${message}" class="success-msg" th:if="${message != null}"></p>
+<p id="message"></p>
 
 
 </body>
