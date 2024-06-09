@@ -38,7 +38,10 @@ public class ClientService {
 
         }
         if(clientRepository.findByEmail(client.getEmail()).isPresent()){
-            throw new ValidationException("The user with the entered email address is already regitered!");
+            throw new ValidationException("The user with the entered email address is already registered!");
+        }
+        if(client.getName() == null || client.getName().isEmpty()){
+            throw new ValidationException("The name you entered can not be null or empty!");
         }
 
 
