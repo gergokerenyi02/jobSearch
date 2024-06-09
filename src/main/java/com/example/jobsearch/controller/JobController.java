@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
@@ -35,7 +36,7 @@ public class JobController {
     private HttpSession httpSession;
 
     @PostMapping
-    public ResponseEntity<?> createJob(@ModelAttribute Job job) {
+    public ResponseEntity<?> createJob(@RequestBody Job job) {
 
         String apiKey = httpSession.getAttribute("apiKey").toString();
 
@@ -46,7 +47,7 @@ public class JobController {
 
         Job savedJob = jobService.createJob(job);
 
-        String jobUrl = "/position/" + savedJob.getTitle().replaceAll("\\s", "-") + "-" + savedJob.getLocation() + "-" + savedJob.getId();
+        String jobUrl = "/position/" + savedJob.getId();
         return ResponseEntity.ok(jobUrl);
 
     }
