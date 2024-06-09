@@ -34,7 +34,24 @@
             justify-content: space-around;
         }
     </style>
-
+    <script>
+        async function searchJobs() {
+            const keywordTitle = document.getElementById("keyword_title").value;
+            const keywordLocation = document.getElementById("keyword_location").value;
+            const response = await fetch(`/position/search?keyword_title=${keywordTitle}&keyword_location=${keywordLocation}`);
+            const jobDetails = await response.json();
+            const resultsDiv = document.getElementById("results");
+            resultsDiv.innerHTML = ""; // Clear previous results
+            jobDetails.forEach(job => {
+                const link = document.createElement("a");
+                link.href = job.url;
+                link.textContent = `${job.title} - ${job.location}`;
+                link.target = "_blank"; // Open link in new tab
+                resultsDiv.appendChild(link);
+                resultsDiv.appendChild(document.createElement("br"));
+            });
+        }
+    </script>
 </head>
 <body>
 <h1 th:text="${welcome_message}"></h1>
@@ -63,13 +80,14 @@
 
 <section id="jobSearch">
     <h2>Job Search</h2>
-    <form method="get" action="/position/search">
+
         <label for="keyword_title">Keyword:</label>
         <input type="text" id="keyword_title" name="keyword_title" required>
         <label for="keyword_location">Location:</label>
         <input type="text" id="keyword_location" name="keyword_location" required>
-        <button type="submit">Search</button>
-    </form>
+        <button onclick="searchJobs()">Search</button>
+        <div id="results"></div>
+
 </section>
 </div>
 <p th:text="${message}" class="success-msg" th:if="${message != null}"></p>
