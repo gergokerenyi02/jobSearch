@@ -1,9 +1,7 @@
 package com.example.jobsearch.model;
 
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Entity;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 import lombok.Getter;
 
 import lombok.Setter;
@@ -19,8 +17,13 @@ public class Client {
 
     private Long id;
 
+    @NotNull
+    @Size(max = 100)
     private String name;
 
+    @NotNull
+    @Email
+    @Column(unique = true)
     private String email;
 
     @Setter
