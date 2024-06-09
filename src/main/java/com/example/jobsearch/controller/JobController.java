@@ -1,5 +1,6 @@
 package com.example.jobsearch.controller;
 
+import com.example.jobsearch.exception.ApiException;
 import com.example.jobsearch.model.Job;
 
 import com.example.jobsearch.service.ClientService;
@@ -39,7 +40,8 @@ public class JobController {
         String apiKey = httpSession.getAttribute("apiKey").toString();
 
         if (!clientService.isValidApiKey(apiKey)) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid API key");
+            throw new ApiException(HttpStatus.UNAUTHORIZED, "Invalid API Key");
+            //return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid API key");
         }
 
         Job savedJob = jobService.createJob(job);
@@ -51,6 +53,13 @@ public class JobController {
 
     @GetMapping("/search")
     public ResponseEntity<?> searchJobs(@RequestParam String keyword_title, @RequestParam String keyword_location) {
+
+        String apiKey = httpSession.getAttribute("apiKey").toString();
+
+        if (!clientService.isValidApiKey(apiKey)) {
+            //return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid API key");
+            throw new ApiException(HttpStatus.UNAUTHORIZED, "Invalid API Key");
+        }
         List<Job> jobs = jobService.searchJobsByKeyword(keyword_title, keyword_location);
         List<Map<String, String>> jobDetails = new ArrayList<>();
         for (Job job : jobs) {
