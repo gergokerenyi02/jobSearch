@@ -56,8 +56,8 @@ public class JobController {
         for (Job job : jobs) {
             Map<String, String> details = new HashMap<>();
             details.put("url", "/position/" + job.getId());
-            details.put("title", job.getTitle().replaceAll("\\s", "-"));
-            details.put("location", job.getLocation().replaceAll("\\s", "-"));
+            details.put("title", job.getTitle());
+            details.put("location", job.getLocation());
             jobDetails.add(details);
         }
         return ResponseEntity.ok(jobDetails);
