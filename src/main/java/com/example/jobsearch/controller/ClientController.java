@@ -13,6 +13,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
+import java.util.HashMap;
+import java.util.Map;
+
 
 // Controller réteg
 // Megkapja a bejövő HTTP kéréseket és meghatározza milyen műveletet hajtson végre
@@ -41,15 +44,13 @@ public class ClientController {
     // Használjunk @ModelAttribute annotációt
 
     @PostMapping
-    public ResponseEntity<?> registerClient(@Validated @ModelAttribute Client client) {
+    public ResponseEntity<?> registerClient(@Validated @RequestBody Client client) {
         String apiKey = clientService.registerClient(client);
 
         httpSession.setAttribute("apiKey", apiKey);
-        httpSession.setAttribute("message", "User created successfully!");
 
-        //RedirectView redirectView = new RedirectView("/");
-        //return new ModelAndView(redirectView);
         return ResponseEntity.ok(apiKey);
+
     }
 
 }
