@@ -9,7 +9,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Getter
+@Getter @Setter
 public class Job {
 
     @Id
@@ -17,11 +17,11 @@ public class Job {
 
     private Long id;
 
-    @Setter
+
     @Size(max = 50)
     private String title;
 
-    @Setter
+
     @Size(max = 50)
     private String location;
 
