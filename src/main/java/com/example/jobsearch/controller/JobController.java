@@ -41,14 +41,23 @@ public class JobController {
 
         Job savedJob = jobService.createJob(job);
 
-        String jobUrl = "/position/" + savedJob.getTitle() + "-" + savedJob.getLocation() + "-" + savedJob.getId();
+        String jobUrl = "/position/" + savedJob.getTitle().replaceAll("\\s", "-") + "-" + savedJob.getLocation() + "-" + savedJob.getId();
         return ResponseEntity.ok(jobUrl);
 
     }
 
     @GetMapping("/search")
-    public ResponseEntity<?> searchJobs(@RequestParam String keyword) {
-        List<Job> jobs = jobService.searchJobsByKeyword(keyword);
+    public ResponseEntity<?> searchJobs(@RequestParam String keyword_title, @RequestParam String keyword_location) {
+        List<Job> jobs = jobService.searchJobsByKeyword(keyword_title, keyword_location);
         return ResponseEntity.ok(jobs);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getJobById(@PathVariable Long id) {
+        Job job = jobService.getJobById(id);
+        if (job == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(job);
     }
 }
