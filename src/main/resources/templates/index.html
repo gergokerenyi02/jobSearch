@@ -39,33 +39,6 @@
         }
     </style>
     <script>
-        async function searchJobs() {
-            const keywordTitle = document.getElementById("keyword_title").value;
-            const keywordLocation = document.getElementById("keyword_location").value;
-            const response = await fetch(`/position/search?keyword_title=${keywordTitle}&keyword_location=${keywordLocation}`);
-            const jobDetails = await response.json();
-
-            if(response.ok)
-            {
-                const resultsDiv = document.getElementById("results");
-                resultsDiv.innerHTML = ""; // Clear previous results
-                jobDetails.forEach(job => {
-                    const link = document.createElement("a");
-                    link.href = job.url;
-                    link.textContent = `${job.title} - ${job.location}`;
-                    link.target = "_blank"; // Open link in new tab
-                    resultsDiv.appendChild(link);
-                    resultsDiv.appendChild(document.createElement("br"));
-                });
-            } else
-            {
-                const msgDiv = document.getElementById("message");
-                msgDiv.textContent = "Error: " + jobDetails.message;
-                msgDiv.classList.add("error-msg");
-                msgDiv.classList.remove("success-msg");
-            }
-
-        }
 
         async function registerClient(event) {
             event.preventDefault();
@@ -93,10 +66,93 @@
 
         }
 
+        async function createJob(event)
+        {
+            event.preventDefault();
+            const jobTitle = document.getElementById("title").value;
+            const jobLocation = document.getElementById("location").value;
+
+            const response = await fetch('/position', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ title: jobTitle, location: jobLocation })
+            });
+
+
+            if (response.ok) {
+                const jobUrl = await response.text();
+                const msgDiv = document.getElementById("message");
+                msgDiv.textContent = jobUrl;
+                msgDiv.classList.add("success-msg");
+                msgDiv.classList.remove("error-msg");
+
+            } else {
+                const errorMsg = await response.json();
+                const msgDiv = document.getElementById("message");
+                msgDiv.textContent = "Error: " + errorMsg.message;
+                msgDiv.classList.add("error-msg");
+                msgDiv.classList.remove("success-msg");
+
+            }
+        }
+
+        async function searchJobs() {
+            const keywordTitle = document.getElementById("keyword_title").value;
+            const keywordLocation = document.getElementById("keyword_location").value;
+            const response = await fetch(`/position/search?keyword_title=${keywordTitle}&keyword_location=${keywordLocation}`);
+            const jobDetails = await response.json();
+
+            if(response.ok)
+            {
+                const resultsDiv = document.getElementById("results");
+                resultsDiv.innerHTML = "";
+                jobDetails.forEach(job => {
+                    const link = document.createElement("a");
+                    link.href = "#"
+
+                    link.onclick = link.onclick = function() {
+                        loadJobDetails(job.url);
+                    };
+                    link.textContent = `${job.title} - ${job.location}`;
+                    //link.target = "_blank";
+                    resultsDiv.appendChild(link);
+                    resultsDiv.appendChild(document.createElement("br"));
+                });
+            } else
+            {
+                const msgDiv = document.getElementById("message");
+                msgDiv.textContent = "Error: " + jobDetails.message;
+                msgDiv.classList.add("error-msg");
+                msgDiv.classList.remove("success-msg");
+            }
+
+        }
+
+        async function getJobDetails(path) {
+            const response = await fetch(path);
+            return await response.json();
+        }
+
+        async function displayJobDetails(path) {
+            const jobDetails = await getJobDetails(path);
+
+            const jobDetailsDiv = document.getElementById("job-details");
+            jobDetailsDiv.innerHTML = `Title: ${jobDetails.title}, Location: ${jobDetails.location}`;
+        }
+
+        function loadJobDetails(path) {
+
+            displayJobDetails(path);
+        }
+
+
     </script>
 </head>
 <body>
 <h1 th:text="${welcome_message}"></h1>
+
 <div class="menu">
 <section id="registration">
     <h2>Client Registration</h2>
@@ -111,7 +167,7 @@
 
 <section id="jobCreation">
     <h2>Job Creation</h2>
-    <form method="post" action="/position">
+    <form id="jobCreationForm" onsubmit="createJob(event)">
         <label for="title">Job Title:</label>
         <input type="text" id="title" name="title" required>
         <label for="location">Location:</label>
@@ -129,6 +185,7 @@
         <input type="text" id="keyword_location" name="keyword_location" required>
         <button onclick="searchJobs()">Search</button>
         <div id="results"></div>
+        <div id="job-details"></div>
 
 </section>
 </div>
