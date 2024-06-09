@@ -2,6 +2,7 @@ package com.example.jobsearch.service;
 
 import java.util.Optional;
 import java.util.UUID;
+import com.example.jobsearch.exception.ValidationException;
 import com.example.jobsearch.model.Client;
 import com.example.jobsearch.model.Job;
 import com.example.jobsearch.repository.ClientRepository;
@@ -31,6 +32,16 @@ public class ClientService {
     private ClientRepository clientRepository;
 
     public String registerClient(Client client) {
+
+        if(client.getEmail() == null || client.getEmail().isEmpty()){
+            throw new ValidationException("The email you entered can not be null or empty!");
+
+        }
+        if(clientRepository.findByEmail(client.getEmail()).isPresent()){
+            throw new ValidationException("The user with the entered email address is already regitered!");
+        }
+
+
         client.setApiKey(UUID.randomUUID().toString());
         clientRepository.save(client);
         return client.getApiKey();
