@@ -1,7 +1,9 @@
 package com.example.jobsearch.service;
 
+import java.util.Optional;
 import java.util.UUID;
 import com.example.jobsearch.model.Client;
+import com.example.jobsearch.model.Job;
 import com.example.jobsearch.repository.ClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,8 +15,7 @@ import org.springframework.stereotype.Service;
 // Itt:
 // Üzleti logika:
 // Kliens regisztrációja: VALIDÁCIÓ, API kulcs generálás, Adatbázisba mentés
-// Állás létrehozása: VALIDÁCIÓ, API kulcs ellenőrzése, Adatbázisba mentés
-// Állás keresés: API kulcs ellenőrzés, keresés végrehajtása, eredmények visszaadása
+
 
 // Összegzés
 // Az üzleti logika az alkalmazás működésének a központi része, felelős az adatok kezeléséért az üzleti szabályok és folyamatok alapján
@@ -34,4 +35,11 @@ public class ClientService {
         clientRepository.save(client);
         return client.getApiKey();
     }
+
+    public boolean isValidApiKey(String apiKey) {
+        Optional<Client> client = clientRepository.findByApiKey(apiKey);
+        return client.isPresent();
+    }
+
+
 }
