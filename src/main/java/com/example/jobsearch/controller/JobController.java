@@ -15,7 +15,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/position")
@@ -49,7 +52,15 @@ public class JobController {
     @GetMapping("/search")
     public ResponseEntity<?> searchJobs(@RequestParam String keyword_title, @RequestParam String keyword_location) {
         List<Job> jobs = jobService.searchJobsByKeyword(keyword_title, keyword_location);
-        return ResponseEntity.ok(jobs);
+        List<Map<String, String>> jobDetails = new ArrayList<>();
+        for (Job job : jobs) {
+            Map<String, String> details = new HashMap<>();
+            details.put("url", "/position/" + job.getId());
+            details.put("title", job.getTitle().replaceAll("\\s", "-"));
+            details.put("location", job.getLocation().replaceAll("\\s", "-"));
+            jobDetails.add(details);
+        }
+        return ResponseEntity.ok(jobDetails);
     }
 
     @GetMapping("/{id}")
