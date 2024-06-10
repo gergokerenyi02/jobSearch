@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class JobService {
 
-    @Autowired
+
     private JobRepository jobRepository;
 
     public Job createJob(Job job) {

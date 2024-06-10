@@ -28,7 +28,8 @@ public class ClientService {
 
     // Autowired annotáció DI (Dependency Injection)
     // Megkeresi a Spring a Bean-t és injektálja
-    @Autowired
+
+
     private ClientRepository clientRepository;
 
     public String registerClient(Client client) {

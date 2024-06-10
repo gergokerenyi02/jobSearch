@@ -2,7 +2,7 @@ package com.example.jobsearch.controller;
 
 import com.example.jobsearch.model.Client;
 import com.example.jobsearch.service.ClientService;
-import jakarta.servlet.http.HttpSession;
+import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 
@@ -10,8 +10,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.view.RedirectView;
+
 
 import java.util.HashMap;
 import java.util.Map;
@@ -28,7 +27,7 @@ public class ClientController {
     // ClientService Bean-t megkeresi a Spring és injektálja
     @Autowired
     private ClientService clientService;
-    @Autowired
+
     private HttpSession httpSession;
 
 
