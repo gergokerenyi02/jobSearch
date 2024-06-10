@@ -1,6 +1,8 @@
 package com.example.jobsearch.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.Size;
 //import jakarta.validation.constraints.*;
 import lombok.Getter;
 
@@ -19,15 +21,12 @@ public class Client {
     @Column(name="id")
     private Long id;
 
-
-
-    //@Size(max = 100)
+    @Size(max = 100)
     @Column(name="name")
     private String name;
 
 
-    //@Email(regexp = ".+[@].+[\\.].+")
-
+    @Email(regexp = ".+[@].+[\\.].+")
     @Column(unique = true, name = "email")
     private String email;
 
