@@ -84,14 +84,15 @@
             if (response.ok) {
                 const jobUrl = await response.text();
                 const msgDiv = document.getElementById("message");
-                msgDiv.textContent = jobUrl;
+                //msgDiv.textContent = jobUrl;
+                msgDiv.textContent = "Job created successfully!";
                 msgDiv.classList.add("success-msg");
                 msgDiv.classList.remove("error-msg");
 
             } else {
-                const errorMsg = await response.json();
+                const errorMsg = await response.text();
                 const msgDiv = document.getElementById("message");
-                msgDiv.textContent = "Error: " + errorMsg.message;
+                msgDiv.textContent = "Error: " + errorMsg;
                 msgDiv.classList.add("error-msg");
                 msgDiv.classList.remove("success-msg");
 
