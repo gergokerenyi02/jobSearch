@@ -90,9 +90,9 @@
                 msgDiv.classList.remove("error-msg");
 
             } else {
-                const errorMsg = await response.text();
+                const errorMsg = await response.json();
                 const msgDiv = document.getElementById("message");
-                msgDiv.textContent = "Error: " + errorMsg;
+                msgDiv.textContent = "Error: " + errorMsg.message;
                 msgDiv.classList.add("error-msg");
                 msgDiv.classList.remove("success-msg");
 
