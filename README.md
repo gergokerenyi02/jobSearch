@@ -27,3 +27,7 @@ Függőségek telepítése: mvn install
 A projekt beállításokban érdemes ellenőrizni a projekt beállítását.
 Java 11 esetén szükséges: SDK -> JDK 11, Language Level -> 11 - Local variable syntax for lambda parameters.
 Java 19 esetén szükséges: SDK -> JDK 19, Language Level -> 17 - Sealed types, always strict floating-point semantics
+
+### License
+
+Gergő Kerényi 2024
