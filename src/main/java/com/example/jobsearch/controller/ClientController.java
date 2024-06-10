@@ -28,6 +28,7 @@ public class ClientController {
     @Autowired
     private ClientService clientService;
 
+    @Autowired
     private HttpSession httpSession;
 
 

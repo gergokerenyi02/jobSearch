@@ -32,6 +32,7 @@ public class JobController {
     @Autowired
     private ClientService clientService;
 
+    @Autowired
     private HttpSession httpSession;
 
     @PostMapping
