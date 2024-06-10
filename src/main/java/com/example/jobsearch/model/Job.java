@@ -1,6 +1,7 @@
 package com.example.jobsearch.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 //import javax.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,9 +16,9 @@ public class Job {
     private Long id;
 
     @Column(name="title")
-    //@Size(max = 50)
+    @Size(max = 50)
     private String title;
     @Column(name="location")
-    //@Size(max = 50)
+    @Size(max = 50)
     private String location;
 }
