@@ -51,7 +51,7 @@ SELECT * FROM JOB;
 
 A localhost:8080 oldalon zölddel jelölt üzenet jelzi, ha sikeres regisztráció, vagy állás hozzáadása történik. Ezt látnunk kell az adatbázisban is, ha lefuttatjuk a fentebb említett SELECT utasításokat.
 
-Az API dokumentáció megtalálható az alábbi címen: http://localhost:8080/swagger-ui.html
+Az API dokumentáció megtalálható az alábbi címen (Java 11 projekt esetén): http://localhost:8080/swagger-ui.html
 
 ### License
 
