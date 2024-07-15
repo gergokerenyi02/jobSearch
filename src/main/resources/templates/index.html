@@ -6,8 +6,7 @@
         .success-msg {
             color: green;
         }
-        .error-msg
-        {
+        .error-msg {
             color: red;
         }
         form {
@@ -39,6 +38,17 @@
         }
     </style>
     <script>
+
+        async function validateSession()
+        {
+            const response = await fetch('/session/validate');
+            const result = await response.json();
+
+            if(!result.ok)
+            {
+                window.location.href = "/login";
+            }
+        }
 
         async function registerClient(event) {
             event.preventDefault();
@@ -155,7 +165,7 @@
 <h1 th:text="${welcome_message}"></h1>
 
 <div class="menu">
-<section id="registration">
+<section id="clientRegistration">
     <h2>Client Registration</h2>
     <form id="registrationForm" onsubmit="registerClient(event)">
         <label for="name">Your Name:</label>
@@ -167,7 +177,7 @@
 </section>
 
 <section id="jobCreation">
-    <h2>Job Creation</h2>
+    <h2>Create a new job</h2>
     <form id="jobCreationForm" onsubmit="createJob(event)">
         <label for="title">Job Title:</label>
         <input type="text" id="title" name="title" required>
@@ -192,6 +202,11 @@
 </div>
 <p id="message"></p>
 
-
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        console.log('DOMContentLoaded event fired');
+        validateSession(); // Check if this function is called and runs as expected
+    });
+</script>
 </body>
 </html>
