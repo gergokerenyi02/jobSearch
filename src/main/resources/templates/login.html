@@ -63,6 +63,13 @@
                 msgDiv.textContent = "Registration successful!"
                 msgDiv.classList.add("success-msg");
                 msgDiv.classList.remove("error-msg");
+
+                const validateResponse = await fetch('/session/validate');
+                const validateResult = await validateResponse.json();
+
+                if (validateResult.status === "success") {
+                    window.location.href = "/";
+                }
             } else {
                 msgDiv.textContent = "Registration failed: " + result;
                 msgDiv.classList.add("error-msg");
