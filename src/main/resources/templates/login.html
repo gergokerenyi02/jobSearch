@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <title>Job Search Application</title>
+    <style>
+        .success-msg {
+            color: green;
+        }
+
+        .error-msg {
+            color: red;
+        }
+
+        form {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 5px;
+            margin-bottom: 10px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #6e96c1;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .menu {
+            display: flex;
+            justify-content: space-around;
+        }
+    </style>
+
+    <script>
+
+        async function registerClient(event) {
+            event.preventDefault();
+            const name = document.getElementById("name").value;
+            const email = document.getElementById("email").value;
+            const response = await fetch('/client', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({email,name})
+            });
+
+            const result = await response.text();
+            const msgDiv = document.getElementById("message");
+            if (response.ok) {
+                msgDiv.textContent = "Registration successful!"
+                msgDiv.classList.add("success-msg");
+                msgDiv.classList.remove("error-msg");
+            } else {
+                msgDiv.textContent = "Registration failed: " + result;
+                msgDiv.classList.add("error-msg");
+                msgDiv.classList.remove("success-msg");
+            }
+
+        }
+
+    </script>
+</head>
+<body>
+
+<h1>Job Search Application</h1>
+<h2>Please register get access and browse in our job listing!</h2>
+
+<div class="menu">
+    <section id="clientRegistration">
+        <h2>Client Registration</h2>
+        <form id="registrationForm" onsubmit="registerClient(event)">
+            <label for="name">Your Name:</label>
+            <input type="text" id="name" name="name" required>
+            <label for="email">Email:</label>
+            <input type="text" id="email" name="email" required>
+            <button type="submit">Register</button>
+        </form>
+        <p id="message"></p>
+    </section>
+</div>
+
+
+
+
+</body>
+</html>
