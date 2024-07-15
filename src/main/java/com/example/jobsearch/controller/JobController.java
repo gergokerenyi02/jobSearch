@@ -57,7 +57,7 @@ public class JobController {
 
         String apiKey = httpSession.getAttribute("apiKey").toString();
 
-        if (!clientService.isValidApiKey(apiKey)) {
+        if (!clientService.isValidApiKey(apiKey) || apiKey == null) {
             //return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid API key");
             throw new ApiException(HttpStatus.UNAUTHORIZED, "Invalid API Key");
         }
