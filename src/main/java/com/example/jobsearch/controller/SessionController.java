@@ -2,6 +2,8 @@ package com.example.jobsearch.controller;
 
 
 
+import com.example.jobsearch.service.ClientService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,25 +20,32 @@ import java.util.Map;
 public class SessionController {
 
 
+    @Autowired
+    private ClientService clientService;
+    @Autowired
+    private HttpSession httpSession;
 
     @GetMapping("/validate")
-    public ResponseEntity<Map<Object, String>> validateSession(HttpSession httpSession) {
+    public ResponseEntity<Map<Object, String>> validateSession() {
         String apiKey = (String) httpSession.getAttribute("apiKey");
 
         Map<Object, String> response = new HashMap<>();
 
-        if (apiKey == null) {
+        if (apiKey == null || !clientService.isValidApiKey(apiKey)) {
             response.put("status", "error");
             response.put("message", "Invalid API Key/Session");
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
 
-        } else
+        } else if(clientService.isValidApiKey(apiKey))
         {
             response.put("status", "success");
             response.put("message", "Valid API Key/Session. User is logged in.");
+            response.put("apiKey", clientService.findUserByApiKey(apiKey));
             return ResponseEntity.ok(response);
+        } else
+        {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
         }
-
 
     }
 
