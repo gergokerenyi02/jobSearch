@@ -44,7 +44,12 @@
             const response = await fetch('/session/validate');
             const result = await response.json();
 
-            if(!result.ok)
+            if(result.status === "success")
+            {
+                return;
+            }
+
+            if(!result.ok || result.status === "error")
             {
                 window.location.href = "/login";
             }
@@ -204,8 +209,8 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', () => {
-        console.log('DOMContentLoaded event fired');
-        validateSession(); // Check if this function is called and runs as expected
+
+        validateSession();
     });
 </script>
 </body>
