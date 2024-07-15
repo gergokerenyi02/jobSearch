@@ -95,14 +95,19 @@
                 body: JSON.stringify({ title: jobTitle, location: jobLocation })
             });
 
+            const msgDiv = document.getElementById("message");
+
 
             if (response.ok) {
                 const jobUrl = await response.text();
-                const msgDiv = document.getElementById("message");
-                //msgDiv.textContent = jobUrl;
+
                 msgDiv.textContent = "Job created successfully!";
                 msgDiv.classList.add("success-msg");
                 msgDiv.classList.remove("error-msg");
+
+                //Display modal (function(?))
+                const modal = document.getElementById("jobModal");
+                modal.style.display = "block";
 
             } else {
                 const errorMsg = await response.text();
@@ -110,6 +115,10 @@
                 msgDiv.textContent = "Error: " + errorMsg;
                 msgDiv.classList.add("error-msg");
                 msgDiv.classList.remove("success-msg");
+
+
+                const modal = document.getElementById("jobModal");
+                modal.style.display = "block";
 
             }
         }
@@ -126,10 +135,10 @@
                 resultsDiv.innerHTML = "";
                 jobDetails.forEach(job => {
                     const link = document.createElement("a");
-                    link.href = "#"
+
 
                     link.onclick = link.onclick = function() {
-                        loadJobDetails(job.url);
+                        displayJobDetails(job.url);
                     };
                     link.textContent = `${job.title} - ${job.location}`;
                     //link.target = "_blank";
@@ -146,21 +155,36 @@
 
         }
 
+
+
+        // DISPLAYING job details based on keywords
+        async function displayJobDetails(path) {
+
+            const jobDetails = await getJobDetails(path);
+            const jobDetailsDiv = document.getElementById("job-details");
+            const modal = document.getElementById("jobModal");
+
+            jobDetailsDiv.innerHTML = `Title: ${jobDetails.title}<br>Location: ${jobDetails.location}`;
+
+            modal.style.display = "block";
+        }
+
+        // Get job details based on the keywords from database
         async function getJobDetails(path) {
             const response = await fetch(path);
             return await response.json();
         }
 
-        async function displayJobDetails(path) {
-            const jobDetails = await getJobDetails(path);
 
-            const jobDetailsDiv = document.getElementById("job-details");
-            jobDetailsDiv.innerHTML = `Title: ${jobDetails.title}, Location: ${jobDetails.location}`;
+        function closeModal() {
+            const modal = document.getElementById("jobModal");
+            modal.style.display = "none";
         }
-
-        function loadJobDetails(path) {
-
-            displayJobDetails(path);
+        window.onclick = function(event) {
+            const modal = document.getElementById("jobModal");
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
         }
 
 
@@ -201,11 +225,19 @@
         <input type="text" id="keyword_location" name="keyword_location" required>
         <button onclick="searchJobs()">Search</button>
         <div id="results"></div>
-        <div id="job-details"></div>
+
 
 </section>
 </div>
-<p id="message"></p>
+<div id="jobModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <div id="job-details"></div>
+        <p id="message"></p>
+    </div>
+</div>
+
+
 
 <script>
     document.addEventListener('DOMContentLoaded', () => {
