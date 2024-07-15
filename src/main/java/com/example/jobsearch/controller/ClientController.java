@@ -4,6 +4,7 @@ import com.example.jobsearch.model.Client;
 import com.example.jobsearch.service.ClientService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import org.springframework.validation.annotation.Validated;
@@ -49,7 +50,7 @@ public class ClientController {
 
         httpSession.setAttribute("apiKey", apiKey);
 
-        return ResponseEntity.ok(apiKey);
+        return new ResponseEntity<>("Client registered successfully." , HttpStatus.OK);
 
     }
 
