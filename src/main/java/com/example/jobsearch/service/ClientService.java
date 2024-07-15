@@ -4,7 +4,6 @@ import java.util.Optional;
 import java.util.UUID;
 import com.example.jobsearch.exception.ValidationException;
 import com.example.jobsearch.model.Client;
-import com.example.jobsearch.model.Job;
 import com.example.jobsearch.repository.ClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
