@@ -40,7 +40,7 @@ public class SessionController {
         {
             response.put("status", "success");
             response.put("message", "Valid API Key/Session. User is logged in.");
-            response.put("apiKey", clientService.findUserByApiKey(apiKey));
+            response.put("user", clientService.findUserByApiKey(apiKey));
             return ResponseEntity.ok(response);
         } else
         {
