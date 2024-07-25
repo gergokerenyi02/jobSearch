@@ -11,8 +11,11 @@ public class ViewController {
 
     @GetMapping("/")
     public String index(HttpSession session, Model model) {
+
         String message = (String) session.getAttribute("message");
         model.addAttribute("welcome_message", "Welcome to Job Search Application!");
+        model.addAttribute("sessionName", session.getAttribute("sessionName"));
+        model.addAttribute("sessionEmail", session.getAttribute("sessionEmail"));
         if (message != null) {
 
             model.addAttribute("message", message);
