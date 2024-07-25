@@ -54,10 +54,10 @@ public class ClientService {
         return client.isPresent();
     }
 
-    public String findUserByApiKey(String apiKey)
+    public String findUserEmailByApiKey(String apiKey)
     {
         return clientRepository.findByApiKey(apiKey).get().getEmail();
     }
-
+    public String findUserNameByApiKey(String apiKey) { return clientRepository.findByApiKey(apiKey).get().getName(); }
 
 }
