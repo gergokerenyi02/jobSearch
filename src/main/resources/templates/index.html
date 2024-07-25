@@ -159,6 +159,7 @@
 </head>
 <body>
 <h1 th:text="${welcome_message}"></h1>
+<p th:if="${sessionEmail != null and sessionName != null}" th:text="'You are logged in as ' + ${sessionEmail} + ' (' + ${sessionName} + ')'"></p>
 
 <div class="menu">
 <!-- Remove client registration from homepage, since user already registered/logged in.
@@ -210,7 +211,6 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', () => {
-
         validateSession();
     });
 </script>
