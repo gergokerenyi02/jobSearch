@@ -20,7 +20,7 @@
             const result = await response.text();
             const msgDiv = document.getElementById("message");
             if (response.ok) {
-                msgDiv.textContent = "Registration successful!"
+                msgDiv.textContent = result.message;
                 msgDiv.classList.add("success-msg");
                 msgDiv.classList.remove("error-msg");
 
