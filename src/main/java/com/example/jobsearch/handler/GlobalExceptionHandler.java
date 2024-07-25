@@ -1,7 +1,6 @@
 package com.example.jobsearch.handler;
 
-import com.example.jobsearch.exception.ApiException;
-import com.example.jobsearch.exception.ValidationException;
+import com.example.jobsearch.exception.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -43,6 +42,15 @@ public class GlobalExceptionHandler {
     public ResponseEntity<Map<String, String>> handleApiException(ApiException ex) {
         Map<String, String> errorResponse = new HashMap<>();
         errorResponse.put("error", "Api Error");
+        errorResponse.put("message", ex.getMessage());
+        return ResponseEntity.status(ex.getStatus()).body(errorResponse);
+    }
+
+
+    @ExceptionHandler(RegistrationException.class)
+    public ResponseEntity<Map<String, String>> handleRegistrationException(RegistrationException ex) {
+        Map<String, String> errorResponse = new HashMap<>();
+        errorResponse.put("error", "Registration Error");
         errorResponse.put("message", ex.getMessage());
         return ResponseEntity.status(ex.getStatus()).body(errorResponse);
     }
