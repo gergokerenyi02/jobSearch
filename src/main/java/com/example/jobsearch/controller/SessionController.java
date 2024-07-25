@@ -23,11 +23,11 @@ public class SessionController {
     @Autowired
     private ClientService clientService;
     @Autowired
-    private HttpSession httpSession;
+    private HttpSession session;
 
     @GetMapping("/validate")
     public ResponseEntity<Map<Object, String>> validateSession() {
-        String apiKey = (String) httpSession.getAttribute("apiKey");
+        String apiKey = (String) session.getAttribute("apiKey");
 
         Map<Object, String> response = new HashMap<>();
 
@@ -40,7 +40,11 @@ public class SessionController {
         {
             response.put("status", "success");
             response.put("message", "Valid API Key/Session. User is logged in.");
-            response.put("user", clientService.findUserByApiKey(apiKey));
+
+            session.setAttribute("sessionName", clientService.findUserNameByApiKey(apiKey));
+            session.setAttribute("sessionEmail", clientService.findUserEmailByApiKey(apiKey));
+
+            response.put("user", clientService.findUserEmailByApiKey(apiKey));
             return ResponseEntity.ok(response);
         } else
         {
