@@ -105,6 +105,7 @@
                     const deleteButton = document.createElement("span");
                     deleteButton.classList.add("close");
                     deleteButton.classList.add("deleteButton");
+                    deleteButton.innerHTML = "×";
                     deleteButton.onclick = function(event){
                         deleteJob(job.id);
                     }
