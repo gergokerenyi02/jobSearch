@@ -1,5 +1,6 @@
 package com.example.jobsearch.service;
 
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.UUID;
 import com.example.jobsearch.exception.ValidationException;
@@ -57,8 +58,22 @@ public class ClientService {
 
     public String findUserEmailByApiKey(String apiKey)
     {
-        return clientRepository.findByApiKey(apiKey).get().getEmail();
+        Optional<Client> optionalClient = clientRepository.findByApiKey(apiKey);
+        if(optionalClient.isPresent()){
+            return optionalClient.get().getEmail();
+        } else
+        {
+            throw new NoSuchElementException("No client found with the provided API key!");
+        }
+
     }
-    public String findUserNameByApiKey(String apiKey) { return clientRepository.findByApiKey(apiKey).get().getName(); }
+    public String findUserNameByApiKey(String apiKey) {
+        Optional<Client> clientOptional = clientRepository.findByApiKey(apiKey);
+        if (clientOptional.isPresent()) {
+            return clientOptional.get().getName();
+        } else {
+            throw new NoSuchElementException("No client found with the provided API key!");
+        }
+    }
 
 }
