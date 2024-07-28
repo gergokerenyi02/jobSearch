@@ -36,15 +36,22 @@ public class JobController {
 
         String apiKey = httpSession.getAttribute("apiKey").toString();
 
-        if (!clientService.isValidApiKey(apiKey)) {
+
+
+        if (apiKey == null || !clientService.isValidApiKey(apiKey)) {
             throw new ApiException(HttpStatus.UNAUTHORIZED, "Invalid API Key");
-            //return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid API key");
         }
 
-        Job savedJob = jobService.createJob(job);
+        Map<Object, String> response = new HashMap<>();
 
+        Job savedJob = jobService.createJob(job);
         String jobUrl = "/position/" + savedJob.getId();
-        return ResponseEntity.ok(jobUrl);
+
+        response.put("status", "success");
+        response.put("message", "Job created successfully!");
+        response.put("jobUrl", jobUrl);
+
+        return ResponseEntity.ok(response);
 
     }
 
@@ -53,10 +60,10 @@ public class JobController {
 
         String apiKey = httpSession.getAttribute("apiKey").toString();
 
-        if (!clientService.isValidApiKey(apiKey) || apiKey == null) {
-            //return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid API key");
+        if (apiKey == null || !clientService.isValidApiKey(apiKey)) {
             throw new ApiException(HttpStatus.UNAUTHORIZED, "Invalid API Key");
         }
+
         List<Job> jobs = jobService.searchJobsByKeyword(keyword_title, keyword_location);
         List<Map<String, String>> jobDetails = new ArrayList<>();
         for (Job job : jobs) {
