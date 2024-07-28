@@ -37,24 +37,23 @@
             });
 
             const msgDiv = document.getElementById("message");
-
+            const result = await response.json()
 
             if (response.ok) {
-                const jobUrl = await response.text();
+                msgDiv.textContent = result.message;
 
-                msgDiv.textContent = "Job created successfully!";
+                //Style
                 msgDiv.classList.add("success-msg");
                 msgDiv.classList.remove("error-msg");
 
-                //Display modal (function(?))
-                const modal = document.getElementById("jobModal");
-                modal.style.display = "block";
 
                 toggleModal();
             } else {
-                const errorMsg = await response.text();
+
                 const msgDiv = document.getElementById("message");
-                msgDiv.textContent = "Error: " + errorMsg;
+                msgDiv.textContent = "Error: " + result.message;
+
+                //Style
                 msgDiv.classList.add("error-msg");
                 msgDiv.classList.remove("success-msg");
 
@@ -138,7 +137,7 @@
 
     </script>
 </head>
-<body>
+<body onload="validateSession()">
 <h1 th:text="${welcome_message}"></h1>
 <p th:if="${sessionEmail != null and sessionName != null}" th:text="'You are logged in as ' + ${sessionEmail} + ' (' + ${sessionName} + ')'"></p>
 
