@@ -6,6 +6,7 @@ import com.example.jobsearch.exception.ValidationException;
 import com.example.jobsearch.model.Client;
 import com.example.jobsearch.repository.ClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 
@@ -33,14 +34,14 @@ public class ClientService {
     public String registerClient(Client client) {
 
         if(client.getEmail() == null || client.getEmail().isEmpty()){
-            throw new ValidationException("The email you entered can not be null or empty!");
+            throw new ValidationException(HttpStatus.BAD_REQUEST,"The email you entered can not be null or empty!");
 
         }
         if(clientRepository.findByEmail(client.getEmail()).isPresent()){
-            throw new ValidationException("The user with the entered email address is already registered!");
+            throw new ValidationException(HttpStatus.BAD_REQUEST, "The user with the entered email address is already registered!");
         }
         if(client.getName() == null || client.getName().isEmpty()){
-            throw new ValidationException("The name you entered can not be null or empty!");
+            throw new ValidationException(HttpStatus.BAD_REQUEST, "The name you entered can not be null or empty!");
         }
 
 
