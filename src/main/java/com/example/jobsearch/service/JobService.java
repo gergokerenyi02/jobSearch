@@ -3,6 +3,8 @@ package com.example.jobsearch.service;
 import com.example.jobsearch.exception.ValidationException;
 import com.example.jobsearch.model.Job;
 import java.util.List;
+import java.util.Optional;
+
 import com.example.jobsearch.repository.JobRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,6 +30,13 @@ public class JobService {
         }
 
         return jobRepository.save(job);
+    }
+
+
+    public void deleteJob(Long id) {
+        Optional<Job> job = jobRepository.findById(id);
+        job.ifPresent(value -> jobRepository.delete(value));
+
     }
 
     public List<Job> searchJobsByKeyword(String keyword_title, String keyword_location) {

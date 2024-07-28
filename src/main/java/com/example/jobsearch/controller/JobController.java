@@ -49,6 +49,12 @@ public class JobController {
 
     }
 
+    @DeleteMapping("/{id}")
+    public void deleteJob(@PathVariable String id) {
+        jobService.deleteJob(Long.valueOf(id));
+    }
+
+
     @GetMapping("/search")
     public ResponseEntity<?> searchJobs(@RequestParam String keywordTitle, @RequestParam String keywordLocation) {
 
@@ -59,6 +65,7 @@ public class JobController {
         for (Job job : jobs) {
             Map<String, String> details = new HashMap<>();
             details.put("url", "/position/" + job.getId());
+            details.put("id", job.getId().toString());
             details.put("title", job.getTitle());
             details.put("location", job.getLocation());
             jobDetails.add(details);

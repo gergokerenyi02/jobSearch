@@ -136,6 +136,12 @@ section {
     border-radius: 10px;
 }
 
+
+.deleteButton
+{
+    position: relative;
+    right: 0;
+}
 .close {
     color: #aaa;
     float: right;
