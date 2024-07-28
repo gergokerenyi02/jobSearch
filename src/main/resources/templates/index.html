@@ -71,9 +71,9 @@
         }
 
         async function searchJobs() {
-            const keywordTitle = document.getElementById("keyword_title").value;
-            const keywordLocation = document.getElementById("keyword_location").value;
-            const response = await fetch(`/position/search?keyword_title=${keywordTitle}&keyword_location=${keywordLocation}`);
+            const keywordTitle = document.getElementById("keywordTitle").value;
+            const keywordLocation = document.getElementById("keywordLocation").value;
+            const response = await fetch(`/position/search?keywordTitle=${keywordTitle}&keywordLocation=${keywordLocation}`);
             const jobDetails = await response.json();
 
             if(response.ok)
@@ -84,11 +84,11 @@
                     const link = document.createElement("a");
 
 
-                    link.onclick = link.onclick = function() {
+                    link.onclick = function() {
                         displayJobDetails(job.url);
                     };
                     link.textContent = `${job.title} - ${job.location}`;
-                    //link.target = "_blank";
+
                     resultsDiv.appendChild(link);
                     resultsDiv.appendChild(document.createElement("br"));
                 });
@@ -147,9 +147,9 @@
     <h2>Create a new job</h2>
     <form id="jobCreationForm" onsubmit="createJob(event)">
         <label for="title">Job Title:</label>
-        <input type="text" id="title" name="title" required>
+        <input type="text" id="title" name="title">
         <label for="location">Location:</label>
-        <input type="text" id="location" name="location" required>
+        <input type="text" id="location" name="location">
         <button type="submit">Create Job</button>
     </form>
 </section>
@@ -157,10 +157,10 @@
 <section id="jobSearch">
     <h2>Job Search</h2>
 
-        <label for="keyword_title">Keyword:</label>
-        <input type="text" id="keyword_title" name="keyword_title" required>
-        <label for="keyword_location">Location:</label>
-        <input type="text" id="keyword_location" name="keyword_location" required>
+        <label for="keywordTitle">Keyword:</label>
+        <input type="text" id="keywordTitle" name="keywordTitle">
+        <label for="keywordLocation">Location:</label>
+        <input type="text" id="keywordLocation" name="keywordLocation">
         <button onclick="searchJobs()">Search</button>
         <div id="results"></div>
 
