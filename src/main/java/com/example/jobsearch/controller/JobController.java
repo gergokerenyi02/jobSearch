@@ -34,13 +34,7 @@ public class JobController {
     @PostMapping
     public ResponseEntity<?> createJob(@RequestBody Job job) {
 
-        String apiKey = httpSession.getAttribute("apiKey").toString();
-
-
-
-        if (apiKey == null || !clientService.isValidApiKey(apiKey)) {
-            throw new ApiException(HttpStatus.UNAUTHORIZED, "Invalid API Key");
-        }
+        checkSession();
 
         Map<Object, String> response = new HashMap<>();
 
@@ -56,15 +50,11 @@ public class JobController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<?> searchJobs(@RequestParam String keyword_title, @RequestParam String keyword_location) {
+    public ResponseEntity<?> searchJobs(@RequestParam String keywordTitle, @RequestParam String keywordLocation) {
 
-        String apiKey = httpSession.getAttribute("apiKey").toString();
+        checkSession();
 
-        if (apiKey == null || !clientService.isValidApiKey(apiKey)) {
-            throw new ApiException(HttpStatus.UNAUTHORIZED, "Invalid API Key");
-        }
-
-        List<Job> jobs = jobService.searchJobsByKeyword(keyword_title, keyword_location);
+        List<Job> jobs = jobService.searchJobsByKeyword(keywordTitle, keywordLocation);
         List<Map<String, String>> jobDetails = new ArrayList<>();
         for (Job job : jobs) {
             Map<String, String> details = new HashMap<>();
@@ -78,10 +68,22 @@ public class JobController {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getJobById(@PathVariable Long id) {
+
+        checkSession();
+
         Job job = jobService.getJobById(id);
         if (job == null) {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(job);
+    }
+
+    private void checkSession()
+    {
+        Object apiKey = httpSession.getAttribute("apiKey");
+
+        if (apiKey == null || !clientService.isValidApiKey(apiKey.toString())) {
+            throw new ApiException(HttpStatus.UNAUTHORIZED, "Invalid API Key");
+        }
     }
 }
