@@ -22,32 +22,6 @@
             }
         }
 
-        async function registerClient(event) {
-            event.preventDefault();
-            const name = document.getElementById("name").value;
-            const email = document.getElementById("email").value;
-            const response = await fetch('/client', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({email,name})
-            });
-
-            const result = await response.text();
-            const msgDiv = document.getElementById("message");
-            if (response.ok) {
-                msgDiv.textContent = "Registration successful!"
-                msgDiv.classList.add("success-msg");
-                msgDiv.classList.remove("error-msg");
-            } else {
-                msgDiv.textContent = "Registration failed: " + result;
-                msgDiv.classList.add("error-msg");
-                msgDiv.classList.remove("success-msg");
-            }
-
-        }
-
         async function createJob(event)
         {
             event.preventDefault();
@@ -162,18 +136,6 @@
 <p th:if="${sessionEmail != null and sessionName != null}" th:text="'You are logged in as ' + ${sessionEmail} + ' (' + ${sessionName} + ')'"></p>
 
 <div class="menu">
-<!-- Remove client registration from homepage, since user already registered/logged in.
-<section id="clientRegistration">
-    <h2>Client Registration</h2>
-    <form id="registrationForm" onsubmit="registerClient(event)">
-        <label for="name">Your Name:</label>
-        <input type="text" id="name" name="name" required>
-        <label for="email">Email:</label>
-        <input type="text" id="email" name="email" required>
-        <button type="submit">Register</button>
-    </form>
-</section>
--->
 
 <section id="jobCreation">
     <h2>Create a new job</h2>
@@ -207,12 +169,5 @@
     </div>
 </div>
 
-
-
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        validateSession();
-    });
-</script>
 </body>
 </html>
