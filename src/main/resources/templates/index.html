@@ -50,6 +50,7 @@
                 const modal = document.getElementById("jobModal");
                 modal.style.display = "block";
 
+                toggleModal();
             } else {
                 const errorMsg = await response.text();
                 const msgDiv = document.getElementById("message");
@@ -57,11 +58,17 @@
                 msgDiv.classList.add("error-msg");
                 msgDiv.classList.remove("success-msg");
 
-
-                const modal = document.getElementById("jobModal");
-                modal.style.display = "block";
+                toggleModal();
 
             }
+        }
+
+
+        function toggleModal()
+        {
+            // Toggle modal display..
+            const modal = document.getElementById("jobModal");
+            modal.classList.toggle("show");
         }
 
         async function searchJobs() {
