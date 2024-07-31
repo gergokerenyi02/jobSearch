@@ -110,9 +110,12 @@
                         deleteJob(job.id);
                     }
 
-                    link.appendChild(deleteButton);
+                    const jobWrapper = document.createElement("div");
+                    jobWrapper.classList.add("job-wrapper");
+                    jobWrapper.appendChild(deleteButton);
+                    jobWrapper.appendChild(link);
 
-                    resultsDiv.appendChild(link);
+                    resultsDiv.appendChild(jobWrapper);
                     resultsDiv.appendChild(document.createElement("br"));
                 });
             } else

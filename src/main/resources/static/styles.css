@@ -99,11 +99,25 @@ section {
 }
 
 #results a {
+    position: relative;
+    display: block;
     color: #3498db;
     cursor: pointer;
     padding: 15px;
     background: #202020;
     text-decoration: none;
+}
+#results span
+{
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    right: 0;
+    display: flex;
+    height: 100%;
+    margin-right: 0.5em;
+    text-align: center;
+    align-items: center;
 }
 #results a:hover {
     background: #1c1c1c;
@@ -160,3 +174,10 @@ section {
 .modal-content #message {
     text-align: center;
 }
+
+.job-wrapper
+{
+    position: relative;
+    width: 100%;
+}
+
