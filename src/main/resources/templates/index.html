@@ -76,6 +76,25 @@
         }
 
 
+        async function modifyJob(jobId, title, location)
+        {
+
+
+            const response = await fetch(`/position/modify`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({id: jobId, title: title, location: location})
+
+            })
+
+            console.log(title);
+            console.log(location);
+            const result = await response.json();
+        }
+
+
         function toggleModal()
         {
             // Toggle modal display..
@@ -112,9 +131,25 @@
                         deleteJob(job.id);
                     }
 
+                    // Creating modify button for each job.
+                    const modifyButton = document.createElement("span");
+                    modifyButton.classList.add("close");
+                    modifyButton.classList.add("deleteButton");
+                    modifyButton.innerHTML = "✎";
+                    modifyButton.onclick = function(event){
+                        renderModifyForm(job.id);
+                    }
+
                     const jobWrapper = document.createElement("div");
                     jobWrapper.classList.add("job-wrapper");
-                    jobWrapper.appendChild(deleteButton);
+
+                    const actionsWrapper = document.createElement("div");
+                    actionsWrapper.classList.add("actions-wrapper");
+                    actionsWrapper.appendChild(deleteButton);
+                    actionsWrapper.appendChild(modifyButton);
+
+                    jobWrapper.appendChild(actionsWrapper);
+
                     jobWrapper.appendChild(link);
 
                     resultsDiv.appendChild(jobWrapper);
@@ -153,15 +188,57 @@
 
         function closeModal() {
             const modal = document.getElementById("jobModal");
+
+            document.querySelector("#job-details").innerHTML = "";
+
+            const jobForm = document.querySelector("#jobForm");
+            if(jobForm != null)
+            {
+                jobForm.remove();
+            }
+
             modal.style.display = "none";
         }
         window.onclick = function(event) {
             const modal = document.getElementById("jobModal");
             if (event.target === modal) {
-                modal.style.display = "none";
+                closeModal();
             }
         }
 
+        function renderModifyForm(jobId)
+        {
+
+            document.querySelector('.modal-content').innerHTML =
+                `
+                <div id="job-details"></div>
+                <span class="close" onclick="closeModal()">&times;</span>
+
+                <form id="jobForm">
+                    <h2>Edit Job</h2>
+                    <label for="jobTitle">Title:</label>
+                    <input type="text" id="jobTitle"/>
+
+                    <label for="jobLocation">Location:</label>
+                    <input type="text" id="jobLocation"/>
+
+                    <button type="button" id="saveChangesButton">Save Changes</button>
+                </form>
+                <p id="message"></p>
+                `;
+
+
+
+            document.getElementById("saveChangesButton").onclick = function() {
+                const title = document.querySelector("#jobTitle").value;
+                const location = document.querySelector("#jobLocation").value;
+
+                modifyJob(jobId, title, location);
+            }
+            document.getElementById('jobModal').style.display = 'block';
+
+
+        }
 
     </script>
 </head>
