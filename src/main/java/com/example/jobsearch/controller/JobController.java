@@ -55,6 +55,30 @@ public class JobController {
     }
 
 
+    @PutMapping("/modify")
+    public ResponseEntity<?> updateJob(@RequestBody Job job)
+    {
+        checkSession();
+
+        Map<Object, String> response = new HashMap<>();
+
+        try
+        {
+            jobService.modifyJob(job);
+            response.put("status", "success");
+            response.put("message", "Job modified successfully.");
+
+            return ResponseEntity.ok(response);
+        } catch(Exception e)
+        {
+            response.put("status", "error");
+            response.put("message", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+
+
+    }
+
     @GetMapping("/search")
     public ResponseEntity<?> searchJobs(@RequestParam String keywordTitle, @RequestParam String keywordLocation) {
 
