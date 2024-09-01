@@ -1,5 +1,6 @@
 package com.example.jobsearch.service;
 
+import com.example.jobsearch.exception.JobNotFoundException;
 import com.example.jobsearch.exception.ValidationException;
 import com.example.jobsearch.model.Job;
 import java.util.List;
@@ -37,6 +38,24 @@ public class JobService {
         Optional<Job> job = jobRepository.findById(id);
         job.ifPresent(value -> jobRepository.delete(value));
 
+    }
+
+    public void modifyJob(Job job) {
+        Optional<Job> jobOptional = jobRepository.findById(job.getId());
+
+        if(jobOptional.isPresent()) {
+
+            Job existingJob = jobOptional.get();
+            existingJob.setTitle(job.getTitle());
+            existingJob.setLocation(job.getLocation());
+
+            // Save the updated job back to the repository
+            jobRepository.save(existingJob);
+
+        } else
+        {
+            throw new JobNotFoundException(HttpStatus.NOT_FOUND, "Job with the ID " + job.getId() + " is not found.");
+        }
     }
 
     public List<Job> searchJobsByKeyword(String keyword_title, String keyword_location) {
