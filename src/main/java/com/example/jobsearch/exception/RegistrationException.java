@@ -3,6 +3,7 @@ package com.example.jobsearch.exception;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
+
 @Getter
 public class RegistrationException extends RuntimeException {
 
@@ -12,7 +13,4 @@ public class RegistrationException extends RuntimeException {
         super(message);
         this.status = status;
     }
-
-
-
 }
