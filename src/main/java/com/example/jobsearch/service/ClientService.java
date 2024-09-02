@@ -11,40 +11,28 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 
-
-// Szolgáltatás
-
-// Itt:
-// Üzleti logika:
-// Kliens regisztrációja: VALIDÁCIÓ, API kulcs generálás, Adatbázisba mentés
-
-
-// Összegzés
-// Az üzleti logika az alkalmazás működésének a központi része, felelős az adatok kezeléséért az üzleti szabályok és folyamatok alapján
-// @Service annotációval ellátott osztály, így elkülönül a Controller és Repository rétegtől
-
-
-@Service // Szolgáltatás réteg jelzése
+@Service
 public class ClientService {
 
-    // Autowired annotáció DI (Dependency Injection)
-    // Megkeresi a Spring a Bean-t és injektálja
+
     @Autowired
     private ClientRepository clientRepository;
 
+
     public String registerClient(Client client) {
+
+        if(client.getName() == null || client.getName().isEmpty()){
+            throw new ValidationException(HttpStatus.BAD_REQUEST, "The name you entered can not be null or empty!");
+        }
 
         if(client.getEmail() == null || client.getEmail().isEmpty()){
             throw new ValidationException(HttpStatus.BAD_REQUEST,"The email you entered can not be null or empty!");
 
         }
+
         if(clientRepository.findByEmail(client.getEmail()).isPresent()){
             throw new ValidationException(HttpStatus.BAD_REQUEST, "The user with the entered email address is already registered!");
         }
-        if(client.getName() == null || client.getName().isEmpty()){
-            throw new ValidationException(HttpStatus.BAD_REQUEST, "The name you entered can not be null or empty!");
-        }
-
 
         client.setApiKey(UUID.randomUUID().toString());
         clientRepository.save(client);
