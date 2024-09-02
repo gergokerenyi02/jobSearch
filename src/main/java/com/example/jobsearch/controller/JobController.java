@@ -31,6 +31,15 @@ public class JobController {
     @Autowired
     private HttpSession httpSession;
 
+    /**
+     * Creates a new job.
+     * This method handles the creation of a new job by validating the session,
+     * saving the job through the service, and returning a response indicating success or failure.
+     *
+     * @param job The job data received from the request body.
+     * @return ResponseEntity containing the status, message, and job URL if successful,
+     *         or an error message if the job creation fails.
+     */
     @PostMapping
     public ResponseEntity<?> createJob(@RequestBody Job job) {
 
@@ -49,12 +58,28 @@ public class JobController {
 
     }
 
+
+    /**
+     * Deletes a job by its ID.
+     * This method handles the deletion of a job. It finds the job by ID and deletes it
+     * using the job service.
+     *
+     * @param id The ID of the job to be deleted.
+     */
     @DeleteMapping("/{id}")
     public void deleteJob(@PathVariable String id) {
         jobService.deleteJob(Long.valueOf(id));
     }
 
 
+    /**
+     * Modifies an existing job.
+     * This method updates the details of an existing job. It validates the session,
+     * modifies the job using the service, and returns a response indicating success or failure.
+     *
+     * @param job The job data received from the request body.
+     * @return ResponseEntity containing the status and message indicating success or failure.
+     */
     @PutMapping("/modify")
     public ResponseEntity<?> updateJob(@RequestBody Job job)
     {
@@ -79,6 +104,16 @@ public class JobController {
 
     }
 
+
+    /**
+     * Searches for jobs based on keywords.
+     * This method searches for jobs by title and location keywords, validates the session,
+     * and returns a list of matching jobs.
+     *
+     * @param keywordTitle The keyword to search for in job titles.
+     * @param keywordLocation The keyword to search for in job locations.
+     * @return ResponseEntity containing a list of matching jobs with their details.
+     */
     @GetMapping("/search")
     public ResponseEntity<?> searchJobs(@RequestParam String keywordTitle, @RequestParam String keywordLocation) {
 
@@ -97,6 +132,16 @@ public class JobController {
         return ResponseEntity.ok(jobDetails);
     }
 
+
+
+    /**
+     * Retrieves a job by its ID.
+     * This method retrieves a job by its ID, validates the session, and returns the job
+     * if found or a 404 Not Found status if the job does not exist.
+     *
+     * @param id The ID of the job to retrieve.
+     * @return ResponseEntity containing the job if found, or a 404 Not Found status if not found.
+     */
     @GetMapping("/{id}")
     public ResponseEntity<?> getJobById(@PathVariable Long id) {
 
@@ -109,6 +154,13 @@ public class JobController {
         return ResponseEntity.ok(job);
     }
 
+    /**
+     * Checks the session for a valid API key.
+     * This method verifies that the session contains a valid API key. If the API key is missing
+     * or invalid, it throws an ApiException with a 401 Unauthorized status.
+     *
+     * @throws ApiException if the API key is missing or invalid.
+     */
     private void checkSession()
     {
         Object apiKey = httpSession.getAttribute("apiKey");
