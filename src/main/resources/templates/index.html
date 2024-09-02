@@ -31,7 +31,7 @@
             const jobTitle = document.getElementById("title").value;
             const jobLocation = document.getElementById("location").value;
 
-            const response = await fetch('/position', {
+            const response = await fetch('/position/create', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -64,9 +64,32 @@
         {
             if(confirm('Are you sure you want to delete this job?'))
             {
-                const response  = await fetch(`/position/${jobId}`, {
+                const response  = await fetch(`/position/delete/${jobId}`, {
                     method: 'DELETE'
                 });
+
+                const msgDiv = document.getElementById("message");
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    msgDiv.textContent = result.message;
+
+                    //Style
+                    msgDiv.classList.add("success-msg");
+                    msgDiv.classList.remove("error-msg");
+
+                    toggleModal();
+                } else
+                {
+                    msgDiv.textContent = "Error: " + result.message;
+
+                    //Style
+                    msgDiv.classList.add("error-msg");
+                    msgDiv.classList.remove("success-msg");
+
+                    toggleModal();
+                }
             }
 
             await searchJobs();
@@ -76,7 +99,6 @@
 
         async function modifyJob(jobId, title, location)
         {
-
 
             const response = await fetch(`/position/modify`, {
                 method: "PUT",
@@ -101,7 +123,7 @@
         async function searchJobs() {
             const keywordTitle = document.getElementById("keywordTitle").value;
             const keywordLocation = document.getElementById("keywordLocation").value;
-            const response = await fetch(`/position/search?keywordTitle=${keywordTitle}&keywordLocation=${keywordLocation}`);
+            const response = await fetch(`/position/browse?keywordTitle=${keywordTitle}&keywordLocation=${keywordLocation}`);
             const jobDetails = await response.json();
 
             if(response.ok)
@@ -169,7 +191,6 @@
 
             const jobDetails = await getJobDetails(path);
             const jobDetailsDiv = document.getElementById("job-details");
-            const modal = document.getElementById("jobModal");
 
             jobDetailsDiv.innerHTML = `Title: ${jobDetails.title}<br>Location: ${jobDetails.location}`;
 

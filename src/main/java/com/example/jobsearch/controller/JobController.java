@@ -40,7 +40,7 @@ public class JobController {
      * @return ResponseEntity containing the status, message, and job URL if successful,
      *         or an error message if the job creation fails.
      */
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<?> createJob(@RequestBody Job job) {
 
         checkSession();
@@ -74,7 +74,7 @@ public class JobController {
      *
      * @param id The ID of the job to be deleted.
      */
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deleteJob(@PathVariable String id) {
 
         checkSession();
@@ -139,7 +139,7 @@ public class JobController {
      * @param keywordLocation The keyword to search for in job locations.
      * @return ResponseEntity containing a list of matching jobs with their details.
      */
-    @GetMapping("/search")
+    @GetMapping("/browse")
     public ResponseEntity<?> searchJobs(@RequestParam String keywordTitle, @RequestParam String keywordLocation) {
 
         checkSession();
