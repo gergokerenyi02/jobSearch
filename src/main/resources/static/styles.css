@@ -135,9 +135,9 @@ section {
     overflow: auto;
     background-color: rgba(0, 0, 0, 0.5);
 }
-.modal.show
+.show
 {
-    display: block;
+    display: block
 }
 
 .modal-content {

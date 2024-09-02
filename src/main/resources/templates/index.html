@@ -25,6 +25,9 @@
         async function createJob(event)
         {
             event.preventDefault();
+
+            const msgDiv = document.getElementById("message");
+
             const jobTitle = document.getElementById("title").value;
             const jobLocation = document.getElementById("location").value;
 
@@ -35,8 +38,6 @@
                 },
                 body: JSON.stringify({ title: jobTitle, location: jobLocation })
             });
-
-            const msgDiv = document.getElementById("message");
             const result = await response.json()
 
             if (response.ok) {
@@ -46,11 +47,9 @@
                 msgDiv.classList.add("success-msg");
                 msgDiv.classList.remove("error-msg");
 
-
                 toggleModal();
-            } else {
-
-                const msgDiv = document.getElementById("message");
+            } else
+            {
                 msgDiv.textContent = "Error: " + result.message;
 
                 //Style
@@ -58,7 +57,6 @@
                 msgDiv.classList.remove("success-msg");
 
                 toggleModal();
-
             }
         }
 
@@ -89,8 +87,6 @@
 
             })
 
-            console.log(title);
-            console.log(location);
             const result = await response.json();
         }
 
@@ -127,7 +123,7 @@
                     deleteButton.classList.add("close");
                     deleteButton.classList.add("deleteButton");
                     deleteButton.innerHTML = "×";
-                    deleteButton.onclick = function(event){
+                    deleteButton.onclick = function(){
                         deleteJob(job.id);
                     }
 
@@ -136,8 +132,9 @@
                     modifyButton.classList.add("close");
                     modifyButton.classList.add("deleteButton");
                     modifyButton.innerHTML = "✎";
-                    modifyButton.onclick = function(event){
+                    modifyButton.onclick = function(){
                         renderModifyForm(job.id);
+                        toggleModal();
                     }
 
                     const jobWrapper = document.createElement("div");
@@ -176,7 +173,7 @@
 
             jobDetailsDiv.innerHTML = `Title: ${jobDetails.title}<br>Location: ${jobDetails.location}`;
 
-            modal.style.display = "block";
+            toggleModal();
         }
 
         // Get job details based on the keywords from database
@@ -197,7 +194,8 @@
                 jobForm.remove();
             }
 
-            modal.style.display = "none";
+
+            modal.classList.toggle("show");
         }
         window.onclick = function(event) {
             const modal = document.getElementById("jobModal");
@@ -235,8 +233,6 @@
 
                 modifyJob(jobId, title, location);
             }
-            document.getElementById('jobModal').style.display = 'block';
-
 
         }
 
