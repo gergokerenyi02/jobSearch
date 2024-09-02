@@ -47,14 +47,22 @@ public class JobController {
 
         Map<Object, String> response = new HashMap<>();
 
-        Job savedJob = jobService.createJob(job);
-        String jobUrl = "/position/" + savedJob.getId();
+        try {
+            Job savedJob = jobService.createJob(job);
+            String jobUrl = "/position/" + savedJob.getId();
 
-        response.put("status", "success");
-        response.put("message", "Job created successfully!");
-        response.put("jobUrl", jobUrl);
+            response.put("status", "success");
+            response.put("message", "Job created successfully!");
+            response.put("jobUrl", jobUrl);
 
-        return ResponseEntity.ok(response);
+            return ResponseEntity.ok(response);
+        } catch(Exception e)
+        {
+            response.put("status", "error");
+            response.put("message", e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        }
+
 
     }
 
@@ -67,8 +75,25 @@ public class JobController {
      * @param id The ID of the job to be deleted.
      */
     @DeleteMapping("/{id}")
-    public void deleteJob(@PathVariable String id) {
-        jobService.deleteJob(Long.valueOf(id));
+    public ResponseEntity<?> deleteJob(@PathVariable String id) {
+
+        checkSession();
+
+        Map<Object, String> response = new HashMap<>();
+
+        try {
+            jobService.deleteJob(Long.valueOf(id));
+            response.put("status", "success");
+            response.put("message", "Job deleted successfully!");
+
+            return ResponseEntity.ok(response);
+        } catch(Exception e)
+        {
+            response.put("status", "error");
+            response.put("message", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+
     }
 
 

@@ -28,22 +28,25 @@ public class ClientController {
     @PostMapping
     public ResponseEntity<?> registerClient(@Validated @RequestBody Client client) {
 
-        String apiKey = clientService.registerClient(client);
-        httpSession.setAttribute("apiKey", apiKey);
 
         Map<Object, String> response = new HashMap<>();
 
-        if(apiKey != null) {
+        try {
+            String apiKey = clientService.registerClient(client);
+            httpSession.setAttribute("apiKey", apiKey);
 
             response.put("status", "success");
             response.put("message", "Client registered successfully");
 
-            return new ResponseEntity<>(response, HttpStatus.OK);
-        } else
-        {
-            throw new RegistrationException(HttpStatus.BAD_REQUEST, "Registration failed");
-        }
+            return ResponseEntity.ok(response);
 
+        } catch(Exception e)
+        {
+            response.put("status", "error");
+            response.put("message", e.getMessage());
+
+            return ResponseEntity.internalServerError().body(response);
+        }
     }
 
 }
